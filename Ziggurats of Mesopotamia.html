@@ -1,0 +1,435 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Ziggurats of Mesopotamia</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+SC:wght@700;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+/* Layout: one reading column of "clay tablet" sections down a mud-brick page, with a full-width 3D build yard in the middle */
+:root{
+  --bg:#f3e9d8;        /* sun-dried clay */
+  --surface:#fbf5ea;
+  --ink:#2b2118;       /* bitumen */
+  --muted:#6e5c49;
+  --brick:#b5683a;     /* baked brick */
+  --lapis:#1f4e9c;     /* lapis lazuli */
+  --river:#2f8a86;
+  --gold:#c99a2e;
+  --line:#e0cfb4;
+  --good:#2f7d3a; --bad:#b23a2a;
+  --display:"Alegreya SC", Georgia, serif;
+  --body:"Atkinson Hyperlegible", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#1d1813;--surface:#2a221a;--ink:#f1e6d4;--muted:#bba78e;--brick:#d98656;--lapis:#7ea6f0;--river:#5cc2bc;--gold:#e2b850;--line:#43372a;--good:#6cc177;--bad:#ef7c6b;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1d1813;--surface:#2a221a;--ink:#f1e6d4;--muted:#bba78e;--brick:#d98656;--lapis:#7ea6f0;--river:#5cc2bc;--gold:#e2b850;--line:#43372a;--good:#6cc177;--bad:#ef7c6b;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:1.05rem/1.6 var(--body);margin:0}
+.wrap{max-width:900px;margin:0 auto;padding-block:24px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;line-height:1.15;margin:0}
+h1{font-size:clamp(2.1rem,6vw,3.4rem);color:var(--brick)}
+h2{font-size:clamp(1.5rem,4vw,2rem)}
+h3{font-size:1.2rem}
+p{margin:0;max-width:65ch}
+.hero{display:flex;flex-direction:column;gap:12px;padding-top:12px}
+.eyebrow{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.wedges{height:14px;background:repeating-linear-gradient(90deg,var(--brick) 0 6px,transparent 6px 14px);clip-path:polygon(0 0,100% 0,100% 100%,0 100%);mask:linear-gradient(90deg,#000,#000 70%,transparent);opacity:.55;border-radius:2px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-size:.8rem;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:3px 10px;color:var(--muted)}
+section.tab{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:14px}
+.sec-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.num{font-family:var(--display);color:var(--gold);font-size:.95rem;letter-spacing:.06em}
+button{font:inherit;cursor:pointer}
+.btn{border:2px solid var(--ink);background:var(--surface);color:var(--ink);border-radius:10px;padding:8px 14px;font-weight:700}
+.btn:hover{background:var(--bg)}
+.btn.primary{background:var(--lapis);border-color:var(--lapis);color:#fff}
+.btn.listen{border-color:var(--river);color:var(--river);font-size:.9rem;padding:5px 12px}
+.btn:focus-visible,.card:focus-visible,.opt:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.btn:disabled{opacity:.45;cursor:default}
+.key{border-left:4px solid var(--gold);padding:8px 12px;background:var(--bg);border-radius:0 8px 8px 0}
+.map{width:100%;max-width:560px;height:auto;align-self:center}
+.map text{fill:var(--ink);font-family:var(--body);font-size:13px}
+/* 3D builder */
+.yard{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:16px}
+@media (max-width:700px){.yard{grid-template-columns:1fr}}
+#stage{position:relative;height:380px;border-radius:12px;overflow:hidden;background:linear-gradient(180deg,color-mix(in srgb,var(--river) 22%,var(--surface)) 0%,var(--bg) 100%);touch-action:none;cursor:grab;border:1px solid var(--line)}
+#stage:active{cursor:grabbing}
+#stage .hint{position:absolute;left:10px;bottom:8px;font-size:.8rem;color:var(--muted);pointer-events:none}
+.panel{display:flex;flex-direction:column;gap:12px;min-width:0}
+.steps{display:flex;gap:6px;flex-wrap:wrap}
+.dot{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-size:.75rem;font-weight:700;color:var(--muted)}
+.dot.done{background:var(--brick);border-color:var(--brick);color:#fff}
+.fact{min-height:120px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+label{font-weight:700}
+input[type=range]{width:100%}
+select,input[type=text],textarea{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px}
+.design[hidden]{display:none}
+/* tabs */
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tabs button{border:2px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:6px 14px;font-weight:700}
+.tabs button[aria-selected=true]{background:var(--brick);border-color:var(--brick);color:#fff}
+/* timeline */
+.timeline{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.card{border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:14px;text-align:left;color:var(--ink);display:flex;flex-direction:column;gap:6px}
+.card .date{font-variant-numeric:tabular-nums;color:var(--lapis);font-weight:700;font-size:.9rem}
+.card .more{color:var(--muted);font-size:.95rem}
+/* compare */
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:480px}
+th,td{border-bottom:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}
+th{font-family:var(--display);font-size:1.05rem}
+/* flip cards */
+.flips{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.flip{perspective:800px;height:150px;border:0;background:none;padding:0;color:var(--ink)}
+.flip .in{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.flip.on .in{transform:rotateY(180deg)}
+.flip .f,.flip .b{position:absolute;inset:0;border-radius:10px;display:grid;place-items:center;padding:12px;backface-visibility:hidden;border:1px solid var(--line)}
+.flip .f{background:var(--bg);font-family:var(--display);font-size:1.3rem;color:var(--brick)}
+.flip .b{background:var(--surface);transform:rotateY(180deg);font-size:.92rem}
+/* quiz */
+.q{border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:8px}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;border:2px solid var(--line);background:var(--bg);color:var(--ink);border-radius:10px;padding:10px 12px}
+.opt.right{border-color:var(--good);background:color-mix(in srgb,var(--good) 14%,var(--bg))}
+.opt.wrong{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 14%,var(--bg))}
+.why{font-size:.95rem;color:var(--muted)}
+.score{font-family:var(--display);font-size:1.4rem}
+canvas#pad{width:100%;height:220px;background:var(--bg);border:1px dashed var(--muted);border-radius:8px;touch-action:none}
+textarea{width:100%;min-height:120px}
+.badge{display:flex;gap:16px;align-items:center;border:2px solid var(--gold);border-radius:12px;padding:16px;background:color-mix(in srgb,var(--gold) 12%,var(--surface))}
+.badge svg{flex:none}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:50}
+footer{color:var(--muted);font-size:.85rem;text-align:center}
+@media (prefers-reduced-motion:reduce){.flip .in{transition:none}}
+</style>
+
+<canvas id="confetti"></canvas>
+<div class="wrap">
+
+<header class="hero" data-read>
+  <span class="eyebrow">6th Grade World History · Ancient Mesopotamia</span>
+  <h1>Ziggurats: Mountains Made of Mud</h1>
+  <p>Five thousand years ago, people in Mesopotamia built giant stepped towers called ziggurats. Each one rose high above its city like a man-made mountain. In this tutorial you will learn why they were built, which civilizations built them, and you will build one yourself in 3D.</p>
+  <div class="row"><button class="btn listen" data-listen>Listen</button></div>
+  <div class="chips" aria-label="Florida standards">
+    <span class="chip">SS.6.W.2.3 Characteristics of civilization</span>
+    <span class="chip">SS.6.W.2.4 Compare river civilizations</span>
+    <span class="chip">SS.6.W.2.5 Achievements of Mesopotamia</span>
+  </div>
+  <div class="wedges" aria-hidden="true"></div>
+</header>
+
+<section class="tab" data-read>
+  <div class="sec-head"><div><div class="num">Part 1</div><h2>The Land Between the Rivers</h2></div><button class="btn listen" data-listen>Listen</button></div>
+  <p><b>Mesopotamia</b> means "the land between the rivers." It sat between the <b>Tigris</b> and <b>Euphrates</b> Rivers, in what is now mostly Iraq. Floods left rich soil called <b>silt</b>, so farmers grew extra food, called a <b>surplus</b>. A surplus meant not everyone had to farm. Some people became priests, scribes, builders, and traders. Villages grew into the world's first cities.</p>
+  <svg class="map" viewBox="0 0 560 320" role="img" aria-label="Simple map of Mesopotamia showing the Tigris and Euphrates rivers flowing to the Persian Gulf, with the cities Babylon, Uruk, and Ur">
+    <rect x="0" y="0" width="560" height="320" rx="10" fill="var(--bg)"/>
+    <path d="M40 70 Q160 20 300 40 Q420 60 520 120 L520 160 Q420 110 300 95 Q170 80 40 120Z" fill="color-mix(in srgb,var(--good) 22%,transparent)"/>
+    <text x="210" y="62">Fertile Crescent</text>
+    <path d="M200 30 C230 90 260 140 300 190 C330 230 380 260 430 290" stroke="var(--river)" stroke-width="5" fill="none"/>
+    <path d="M110 60 C150 120 200 170 250 210 C300 250 360 275 430 290" stroke="var(--lapis)" stroke-width="5" fill="none"/>
+    <path d="M420 285 Q470 300 545 310 L545 320 L410 320Z" fill="color-mix(in srgb,var(--lapis) 40%,transparent)"/>
+    <text x="440" y="306">Persian Gulf</text>
+    <text x="270" y="140" font-weight="700" fill="var(--river)">Tigris</text>
+    <text x="120" y="140" font-weight="700" fill="var(--lapis)">Euphrates</text>
+    <g fill="var(--brick)"><circle cx="232" cy="198" r="6"/><circle cx="300" cy="238" r="6"/><circle cx="350" cy="264" r="6"/></g>
+    <text x="170" y="196">Babylon</text><text x="312" y="234">Uruk</text><text x="362" y="262">Ur</text>
+  </svg>
+  <p class="key">Southern Mesopotamia had almost no stone and few trees. What it had was mud. So people shaped river clay into bricks, and built their greatest buildings out of them.</p>
+</section>
+
+<section class="tab" id="build">
+  <div class="sec-head" data-read><div><div class="num">Part 2</div><h2>Build a 3D Ziggurat</h2></div><button class="btn listen" data-listen>Listen</button></div>
+  <p data-read>A ziggurat is a solid, stepped pyramid with flat terraces. It has no rooms inside. You are the master builder of the city of Ur. Press <b>Build next layer</b> to construct the Great Ziggurat of Ur one step at a time. Drag the model to turn it around.</p>
+  <div class="yard">
+    <div id="stage" aria-label="3D model of a ziggurat. Drag to rotate."><span class="hint">Drag to rotate</span></div>
+    <div class="panel">
+      <div class="steps" id="dots" aria-label="Build progress"></div>
+      <div class="fact" id="fact" aria-live="polite"></div>
+      <div class="row">
+        <button class="btn primary" id="next">Build next layer</button>
+        <button class="btn" id="undo">Back</button>
+        <button class="btn listen" id="factListen">Listen</button>
+      </div>
+      <div class="row">
+        <button class="btn" id="spin" aria-pressed="false">Auto-spin</button>
+        <button class="btn" id="pyr" aria-pressed="false">Show Egyptian pyramid</button>
+      </div>
+    </div>
+  </div>
+  <div class="design" id="design" hidden>
+    <h3>Your turn: design your own ziggurat</h3>
+    <p>Your city needs its own temple tower. Choose how it looks, then name the god it honors.</p>
+    <div class="yard" style="margin-top:10px">
+      <div class="panel">
+        <label for="tiers">Number of terraces: <span id="tiersOut">3</span></label>
+        <input type="range" id="tiers" min="2" max="7" value="3">
+        <label for="brick">Outer brick color</label>
+        <select id="brick"><option value="#a8612f">Baked red-brown</option><option value="#c9a26b">Sun-dried tan</option><option value="#8a4b2a">Dark fired clay</option><option value="#2b5fb3">Blue glazed (like Babylon)</option></select>
+      </div>
+      <div class="panel">
+        <label class="row"><input type="checkbox" id="stairs" checked> Add stairways</label>
+        <label class="row"><input type="checkbox" id="shrine" checked> Add a shrine on top</label>
+        <label for="god">My ziggurat honors the god of:</label>
+        <input type="text" id="god" placeholder="the moon, the sky, water...">
+        <p id="godLine" class="key" aria-live="polite">Name your god to dedicate the tower.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tab" data-read>
+  <div class="sec-head"><div><div class="num">Part 3</div><h2>Why Build a Mountain?</h2></div><button class="btn listen" data-listen id="whyListen">Listen</button></div>
+  <div class="tabs" role="tablist" id="whyTabs">
+    <button role="tab" aria-selected="true" data-k="rel">Religion</button>
+    <button role="tab" aria-selected="false" data-k="gov">Government</button>
+    <button role="tab" aria-selected="false" data-k="eco">Economy</button>
+    <button role="tab" aria-selected="false" data-k="soc">Social classes</button>
+  </div>
+  <div id="whyPanel" role="tabpanel" aria-live="polite"></div>
+</section>
+
+<section class="tab">
+  <div class="sec-head" data-read><div><div class="num">Part 4</div><h2>Civilizations That Built Ziggurats</h2></div><button class="btn listen" data-listen>Listen</button></div>
+  <p data-read>Many peoples ruled Mesopotamia over 3,000 years. Each new group kept building ziggurats. Tap a card to learn more. Dates are BCE, so bigger numbers are older.</p>
+  <div class="timeline" id="timeline"></div>
+</section>
+
+<section class="tab" data-read>
+  <div class="sec-head"><div><div class="num">Part 5</div><h2>Ziggurat or Pyramid?</h2></div><button class="btn listen" data-listen>Listen</button></div>
+  <p>Ancient Egypt grew up along another river, the Nile. Egyptians built pyramids. They look a bit alike, but they had very different jobs. Turn on <b>Show Egyptian pyramid</b> in the 3D builder to see them side by side.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th></th><th>Ziggurat (Mesopotamia)</th><th>Pyramid (Egypt)</th></tr></thead>
+    <tbody>
+      <tr><td><b>Purpose</b></td><td>A temple. A home on earth for the city's god.</td><td>A tomb. A resting place for a dead pharaoh.</td></tr>
+      <tr><td><b>Material</b></td><td>Mud brick, covered in baked brick</td><td>Cut stone blocks</td></tr>
+      <tr><td><b>Shape</b></td><td>Stepped terraces with a flat top</td><td>Smooth sloping sides to a point</td></tr>
+      <tr><td><b>Inside</b></td><td>Solid. No rooms.</td><td>Hidden passages and a burial chamber</td></tr>
+      <tr><td><b>Who went up?</b></td><td>Priests climbed the outside stairs</td><td>It was sealed after the burial</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="tab">
+  <div class="sec-head" data-read><div><div class="num">Part 6</div><h2>Key Words</h2></div><button class="btn listen" data-listen>Listen</button></div>
+  <p data-read>Tap each card to flip it.</p>
+  <div class="flips" id="flips"></div>
+</section>
+
+<section class="tab" id="practice">
+  <div class="sec-head" data-read><div><div class="num">Part 7</div><h2>Show What You Know</h2></div><button class="btn listen" data-listen>Listen</button></div>
+  <p data-read>Answer each question. You get one try, so read carefully. Use the Listen button on any question to hear it.</p>
+  <div id="quiz"></div>
+  <div class="q">
+    <h3>Write it out</h3>
+    <p id="writePrompt">Explain how a ziggurat shows at least two characteristics of civilization. Use details from this tutorial.</p>
+    <div class="row">
+      <button class="btn" id="modeType" aria-pressed="true">Type</button>
+      <button class="btn" id="modePen" aria-pressed="false">Write with Apple Pencil</button>
+      <button class="btn listen" id="writeListen">Listen</button>
+    </div>
+    <textarea id="typed" aria-label="Your written answer" placeholder="A ziggurat shows organized religion because..."></textarea>
+    <div id="penBox" hidden>
+      <canvas id="pad" aria-label="Writing area"></canvas>
+      <div class="row" style="margin-top:6px"><button class="btn" id="clearPad">Clear</button></div>
+    </div>
+    <p class="why">Your work saves on this device automatically.</p>
+  </div>
+  <div id="result" aria-live="polite"></div>
+</section>
+
+<footer>Ziggurats of Mesopotamia · Created by Donna Rees</footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const store={get(k,d){try{const v=localStorage.getItem('zig_'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem('zig_'+k,JSON.stringify(v))}catch(e){}}};
+
+/* ---------- Read-aloud: Google US English only, never read standard codes ---------- */
+let voice=null;
+function pickVoice(){const vs=speechSynthesis.getVoices();voice=vs.find(v=>v.name==='Google US English')||vs.find(v=>/google/i.test(v.name)&&/en[-_]US/i.test(v.lang))||null;return voice}
+function getVoice(){return new Promise(res=>{if(pickVoice())return res(voice);let n=0;const t=setInterval(()=>{if(pickVoice()||++n>20){clearInterval(t);res(voice)}},100)})}
+if('speechSynthesis' in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
+function toast(msg){let t=document.getElementById('vtoast');if(!t){t=document.createElement('div');t.id='vtoast';t.setAttribute('role','status');t.style.cssText='position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;z-index:60;max-width:90vw;font-size:.95rem';document.body.appendChild(t)}t.textContent=msg;t.hidden=false;clearTimeout(t._h);t._h=setTimeout(()=>t.hidden=true,4000)}
+function clean(t){return t.replace(/SS\.\d+\.[A-Z]+\.\d+\.\d+/g,'').replace(/\bListen\b/g,'').replace(/\bBCE\b/g,'B.C.E.').replace(/\s+/g,' ').trim()}
+async function speak(t){if(!('speechSynthesis' in window))return;speechSynthesis.cancel();const v=await getVoice();
+ if(!v){toast('The Google US English voice is not available on this device.');return}
+ /* Chrome's Google voice stops after about 15 seconds, so read one sentence at a time */
+ const chunks=clean(t).match(/[^.!?]+[.!?]*/g)||[];
+ chunks.map(s=>s.trim()).filter(Boolean).forEach(s=>{const u=new SpeechSynthesisUtterance(s);u.voice=v;u.lang=v.lang;u.rate=.95;speechSynthesis.speak(u)})}
+function textOf(el){const c=el.cloneNode(true);c.querySelectorAll('.chips,button,svg,.hint').forEach(n=>n.remove());return c.innerText}
+$$('[data-listen]').forEach(b=>b.addEventListener('click',()=>{
+  const sec=b.closest('section,header');const parts=sec.matches('[data-read]')?[sec]:[...sec.querySelectorAll('[data-read]')];
+  speak(parts.map(textOf).join('. '))}));
+
+/* ---------- Guided build steps ---------- */
+const STEPS=[
+ {t:'Choose the sacred spot',f:'Ziggurats were built at the center of a city. At Ur, King Ur-Nammu began the Great Ziggurat around 2100 BCE. Many were built on top of older temples, so the holy place rose higher over time.'},
+ {t:'The mud-brick core',f:'Workers packed thousands of sun-dried mud bricks into a solid base about 210 feet long and 150 feet wide. Small holes let rainwater drain out so the core would not crumble.'},
+ {t:'The baked-brick skin',f:'Sun-dried brick melts in rain. So builders covered the core in bricks baked hard in kilns, glued with bitumen, a sticky black tar. Many bricks were stamped with the king\'s name.'},
+ {t:'The second terrace',f:'A smaller level sat on top of the first. Each step brought the building closer to the sky, where people believed the gods lived.'},
+ {t:'The third terrace',f:'The top terrace made the ziggurat look like a mountain rising out of the flat river plain. People could see it from miles away.'},
+ {t:'Three great stairways',f:'At Ur, three stairways of about 100 steps each met at a gate high on the front. Priests climbed them carrying offerings. Most ordinary people stayed below.'},
+ {t:'The shrine on top',f:'At the very top stood a shrine for the city\'s god. Ur\'s ziggurat honored Nanna, the moon god. People believed the god could come down to this house on earth. Builder complete!'}
+];
+let step=store.get('step',0);
+const dots=$('#dots');STEPS.forEach((s,i)=>{const d=document.createElement('span');d.className='dot';d.textContent=i+1;d.title=s.t;dots.appendChild(d)});
+
+/* ---------- Three.js scene ---------- */
+const stage=$('#stage');let three=!!window.THREE;let R,S,C,G,pyramid,parts={};
+function brickTex(base,mortar){const c=document.createElement('canvas');c.width=c.height=128;const x=c.getContext('2d');x.fillStyle=mortar;x.fillRect(0,0,128,128);
+ for(let r=0;r<8;r++)for(let k=-1;k<5;k++){const off=r%2?16:0;const sh=(Math.random()*24-12)|0;x.fillStyle=shade(base,sh);x.fillRect(k*32+off+1,r*16+1,30,14)}
+ const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;return t}
+function shade(hex,a){const n=parseInt(hex.slice(1),16);let r=(n>>16)+a,g=((n>>8)&255)+a,b=(n&255)+a;const cl=v=>Math.max(0,Math.min(255,v));return `rgb(${cl(r)},${cl(g)},${cl(b)})`}
+function mat(hex,rx,ry){const t=brickTex(hex,shade(hex,-45));t.repeat.set(rx,ry);return new THREE.MeshLambertMaterial({map:t})}
+function box(w,h,d,m,x,y,z){const g=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);g.position.set(x,y+h/2,z);return g}
+function stairsGroup(top,front,m){const g=new THREE.Group();const n=12,h=top/n,d=.22;
+ for(let i=0;i<n;i++){g.add(box(.7,h*(i+1),d,m,0,0,front+(n-i)*d))}
+ for(const s of[-1,1]){for(let i=0;i<n;i++){g.add(box(.24,h*(i+1),.6,m,s*(2.9-i*.22),0,front+.3))}}
+ return g}
+function initThree(){
+ R=new THREE.WebGLRenderer({antialias:true,alpha:true});R.setPixelRatio(Math.min(devicePixelRatio,2));stage.appendChild(R.domElement);
+ S=new THREE.Scene();C=new THREE.PerspectiveCamera(40,1,.1,200);C.position.set(0,6,15);C.lookAt(0,1.4,0);
+ S.add(new THREE.HemisphereLight(0xfff4e0,0x8a6a48,.85));const sun=new THREE.DirectionalLight(0xffffff,.75);sun.position.set(6,10,7);S.add(sun);
+ G=new THREE.Group();S.add(G);
+ const ground=new THREE.Mesh(new THREE.CylinderGeometry(9,9,.2,48),new THREE.MeshLambertMaterial({color:0xcdb48a}));ground.position.y=-.1;G.add(ground);
+ const plaza=new THREE.Mesh(new THREE.BoxGeometry(8.4,.06,7),new THREE.MeshLambertMaterial({color:0xb99d72}));plaza.position.y=.03;parts.plaza=plaza;G.add(plaza);
+ const mud=mat('#c9a26b',3,1),baked=mat('#a8612f',4,1.2);parts.mud=mud;parts.baked=baked;
+ parts.t1=box(6.4,1.3,4.6,mud,0,0,0);
+ parts.t2=box(4.6,1.0,3.2,baked,0,1.3,-.3);
+ parts.t3=box(3.0,.8,2.0,baked,0,2.3,-.5);
+ parts.st=stairsGroup(1.3,2.3,baked);
+ const shr=new THREE.Group();shr.add(box(1.5,.8,1.1,mat('#efe3c8',2,1),0,3.1,-.5));shr.add(box(1.7,.12,1.3,new THREE.MeshLambertMaterial({color:0x1f4e9c}),0,3.9,-.5));parts.sh=shr;
+ [parts.t1,parts.t2,parts.t3,parts.st,parts.sh].forEach(p=>G.add(p));
+ pyramid=new THREE.Mesh(new THREE.ConeGeometry(3.4,4.2,4),new THREE.MeshLambertMaterial({color:0xe3cf9c,flatShading:true}));pyramid.rotation.y=Math.PI/4;pyramid.position.set(7.5,2.1,0);pyramid.visible=false;S.add(pyramid);
+ const ro=new ResizeObserver(size);ro.observe(stage);size();
+ let drag=null;stage.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY};stage.setPointerCapture(e.pointerId)});
+ stage.addEventListener('pointermove',e=>{if(!drag)return;rotY+=(e.clientX-drag.x)*.01;tilt=Math.max(-.3,Math.min(.5,tilt+(e.clientY-drag.y)*.005));drag={x:e.clientX,y:e.clientY}});
+ stage.addEventListener('pointerup',()=>drag=null);stage.addEventListener('pointercancel',()=>drag=null);
+ loop()}
+let rotY=-.5,tilt=.1,spinning=false,custom=null;
+function size(){const w=stage.clientWidth,h=stage.clientHeight;R.setSize(w,h);C.aspect=w/h;C.updateProjectionMatrix()}
+function loop(){if(spinning)rotY+=.006;G.rotation.y=rotY;pyramid.rotation.y=Math.PI/4+rotY;
+ const dist=pyramid.visible?22:15;C.position.set(pyramid.visible?3.5:0,6+tilt*12,dist);C.lookAt(pyramid.visible?3.5:0,1.6,0);R.render(S,C);requestAnimationFrame(loop)}
+function showGuided(){if(!three)return;const p=parts;
+ p.t1.visible=step>=2;p.t1.material=step>=3?p.baked:p.mud;p.t2.visible=step>=4;p.t3.visible=step>=5;p.st.visible=step>=6;p.sh.visible=step>=7}
+
+function render(){
+ $$('.dot').forEach((d,i)=>d.classList.toggle('done',i<step));
+ const s=STEPS[Math.max(0,step-1)];
+ $('#fact').innerHTML=step===0?'<h3>Ready to build?</h3><p>Press <b>Build next layer</b> to start.</p>':`<h3>${step}. ${s.t}</h3><p>${s.f}</p>`;
+ $('#next').disabled=step>=STEPS.length;$('#undo').disabled=step===0;
+ $('#design').hidden=step<STEPS.length;
+ if(step>=STEPS.length)buildCustom();else{clearCustom();showGuided()}
+ store.set('step',step)}
+$('#next').onclick=()=>{step=Math.min(STEPS.length,step+1);render();if(step===STEPS.length)burst()};
+$('#undo').onclick=()=>{step=Math.max(0,step-1);render()};
+$('#factListen').onclick=()=>speak($('#fact').innerText);
+$('#spin').onclick=e=>{spinning=!spinning;e.currentTarget.setAttribute('aria-pressed',spinning)};
+$('#pyr').onclick=e=>{if(!three)return;pyramid.visible=!pyramid.visible;e.currentTarget.setAttribute('aria-pressed',pyramid.visible);e.currentTarget.textContent=pyramid.visible?'Hide Egyptian pyramid':'Show Egyptian pyramid'};
+
+/* ---------- Student design mode ---------- */
+const D=store.get('design',{tiers:3,brick:'#a8612f',stairs:true,shrine:true,god:''});
+$('#tiers').value=D.tiers;$('#tiersOut').textContent=D.tiers;$('#brick').value=D.brick;$('#stairs').checked=D.stairs;$('#shrine').checked=D.shrine;$('#god').value=D.god;
+function clearCustom(){if(custom){G.remove(custom);custom=null}}
+function buildCustom(){
+ godLine();if(!three)return;clearCustom();['t1','t2','t3','st','sh'].forEach(k=>parts[k].visible=false);
+ custom=new THREE.Group();const n=D.tiers,m=mat(D.brick,4,1.2),core=mat('#c9a26b',3,1);let y=0,w=6.6,d=4.8,z=0,h=1.25;
+ for(let i=0;i<n;i++){custom.add(box(w,h,d,i===0&&D.brick==='#c9a26b'?core:m,0,y,z));y+=h;w*=.74;d*=.74;z-=.2;h*=.86}
+ if(D.stairs){const tierH=1.25;custom.add(stairsGroup(tierH,2.4,m))}
+ if(D.shrine){custom.add(box(Math.max(.8,w*1.05),.7,Math.max(.6,d*1.05),mat('#efe3c8',2,1),0,y,z));custom.add(box(Math.max(1,w*1.25),.12,Math.max(.8,d*1.25),new THREE.MeshLambertMaterial({color:0x1f4e9c}),0,y+.7,z))}
+ G.add(custom)}
+function godLine(){$('#godLine').textContent=D.god.trim()?`This ${D.tiers}-terrace ziggurat is the house of the god of ${D.god.trim()}. Priests will climb ${D.stairs?'its stairways':'its ramps'} to bring offerings${D.shrine?' to the shrine on top':''}.`:'Name your god to dedicate the tower.'}
+function saveD(){store.set('design',D);buildCustom()}
+$('#tiers').oninput=e=>{D.tiers=+e.target.value;$('#tiersOut').textContent=D.tiers;saveD()};
+$('#brick').onchange=e=>{D.brick=e.target.value;saveD()};
+$('#stairs').onchange=e=>{D.stairs=e.target.checked;saveD()};
+$('#shrine').onchange=e=>{D.shrine=e.target.checked;saveD()};
+$('#god').oninput=e=>{D.god=e.target.value;store.set('design',D);godLine()};
+
+if(three){try{initThree()}catch(e){three=false}}
+if(!three){stage.innerHTML='<p style="padding:20px">The 3D model could not load on this device. You can still read each building step.</p>'}
+render();
+
+/* ---------- Why tabs ---------- */
+const WHY={
+ rel:'<p>Mesopotamians practiced <b>polytheism</b>, the belief in many gods. Each city had a <b>patron god</b> who protected it. The ziggurat was that god\'s house on earth, a bridge between heaven and earth. Priests made offerings of food and drink at the shrine on top.</p>',
+ gov:'<p>Each Sumerian city ruled itself as a <b>city-state</b>. Early rulers were often priest-kings who said the gods chose them. Building a huge ziggurat showed the king\'s power, because only a strong, organized government could plan the work and feed thousands of laborers.</p>',
+ eco:'<p>The temple area was like the city\'s bank and warehouse. Farmers brought part of their harvest as payment to the temple. Workers stored grain, ran workshops, and traded goods. <b>Scribes</b> kept records of it all on clay tablets in <b>cuneiform</b>, the world\'s first writing system.</p>',
+ soc:'<p>Society was arranged like the ziggurat itself. At the top were the king and priests. Below them were merchants, scribes, and skilled workers. Farmers and laborers made up the largest group. At the bottom were enslaved people, often captured in war.</p>'
+};
+function setWhy(k){$$('#whyTabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.k===k));$('#whyPanel').innerHTML=WHY[k]}
+$$('#whyTabs button').forEach(b=>b.onclick=()=>setWhy(b.dataset.k));setWhy('rel');
+
+/* ---------- Timeline ---------- */
+const TL=[
+ ['Sumerians','about 3500 to 2000 BCE','The first ziggurat builders. City-states like Uruk, Ur, and Eridu raised temple platforms. The White Temple of Uruk sat on one of the earliest.'],
+ ['Akkadians','about 2334 to 2154 BCE','Sargon of Akkad united the Sumerian city-states into the first empire. The Akkadians kept the old temples and gods.'],
+ ['Third Dynasty of Ur','about 2112 to 2004 BCE','King Ur-Nammu built the Great Ziggurat of Ur for the moon god Nanna. Part of it still stands today in Iraq.'],
+ ['Babylonians','about 1894 to 1595 BCE','Under King Hammurabi, famous for his code of laws, Babylon became a powerful city. Its patron god was Marduk.'],
+ ['Elamites','about 1250 BCE','East of Mesopotamia, in what is now Iran, King Untash-Napirisha built Chogha Zanbil, one of the best-preserved ziggurats in the world.'],
+ ['Assyrians','about 900 to 612 BCE','Assyrian kings built ziggurats in their capital cities in northern Mesopotamia, next to their palaces.'],
+ ['Neo-Babylonians','about 626 to 539 BCE','King Nebuchadnezzar II rebuilt Babylon\'s giant ziggurat, Etemenanki, about 300 feet tall. Many historians think it inspired the story of the Tower of Babel.']
+];
+TL.forEach(([n,d,m])=>{const b=document.createElement('button');b.className='card';b.innerHTML=`<span class="date">${d}</span><h3>${n}</h3><span class="more" hidden>${m}</span><span class="why">Tap to read</span>`;
+ b.onclick=()=>{const mo=b.querySelector('.more'),hint=b.querySelector('.why');mo.hidden=!mo.hidden;hint.textContent=mo.hidden?'Tap to read':'';if(!mo.hidden)speak(n+'. '+d+'. '+m)};$('#timeline').appendChild(b)});
+
+/* ---------- Flip cards ---------- */
+[['Ziggurat','A stepped temple tower built of mud brick in Mesopotamia'],['Polytheism','Belief in many gods'],['Patron god','A god believed to protect one city'],['City-state','A city and its nearby land with its own government'],['Surplus','More food than people need right away'],['Cuneiform','Wedge-shaped writing pressed into clay tablets'],['Bitumen','Natural black tar used as glue and waterproofing'],['Scribe','A trained writer who kept records']].forEach(([w,d])=>{
+ const b=document.createElement('button');b.className='flip';b.setAttribute('aria-label',w+'. Tap to flip.');b.innerHTML=`<div class="in"><div class="f">${w}</div><div class="b">${d}</div></div>`;
+ b.onclick=()=>{b.classList.toggle('on');if(b.classList.contains('on'))speak(w+'. '+d)};$('#flips').appendChild(b)});
+
+/* ---------- Quiz: one try per question ---------- */
+const Q=[
+ ['What was the main purpose of a ziggurat?',['A tomb for a king','A temple for the city\'s god','A fort to protect from enemies','A market for traders'],1,'Ziggurats were temples. People believed the city\'s patron god lived in the shrine on top.'],
+ ['Why did Mesopotamians build with mud brick instead of stone?',['Stone was against their religion','Mud brick was stronger than stone','Southern Mesopotamia had little stone but lots of river clay','The king wanted cheap buildings'],2,'Geography shaped building. The river plain had almost no stone or big trees, but clay was everywhere.'],
+ ['Why did builders cover the mud-brick core with baked bricks and bitumen?',['To protect it from rain and water','To make it easier to climb','To hide treasure inside','To make it look like a pyramid'],0,'Sun-dried brick crumbles in water. Baked brick set in tar sealed the outside.'],
+ ['Which person was most likely to climb to the shrine at the top?',['A farmer','A merchant','A priest','An enslaved worker'],2,'Priests climbed the stairs to make offerings. Most ordinary people stayed below.'],
+ ['How is a ziggurat DIFFERENT from an Egyptian pyramid?',['A ziggurat was made of stone','A ziggurat had a burial chamber inside','A ziggurat was a temple with stepped terraces and a flat top','A ziggurat was built along the Nile River'],2,'Pyramids were stone tombs with smooth sides. Ziggurats were mud-brick temples with steps and a flat top.'],
+ ['Building a ziggurat needed thousands of workers, food for them, and careful planning. Which characteristic of civilization does this show best?',['Organized government','Hunting and gathering','Living in small villages','Moving from place to place'],0,'Only an organized government could plan the project, collect resources, and direct workers.'],
+ ['Scribes at the temple recorded grain and trade on clay tablets. This is an example of which achievement?',['The wheel','A writing system called cuneiform','The calendar','Irrigation canals'],1,'Cuneiform began partly as a way to keep temple and trade records.'],
+ ['Read the statement: "The ziggurat was the center of city life." Which detail BEST supports it?',['Ziggurats were made of brick.','The temple stored grain, ran workshops, and was the home of the city\'s god.','Some ziggurats had three terraces.','Ziggurats are found in Iraq today.'],1,'This detail shows the ziggurat mattered for religion AND the economy, so it was central to daily life.']
+];
+const ans=store.get('answers',{});
+Q.forEach(([q,opts,c,why],i)=>{
+ const d=document.createElement('div');d.className='q';
+ d.innerHTML=`<div class="sec-head"><h3>${i+1}. ${q}</h3><button class="btn listen">Listen</button></div><div class="opts"></div><p class="why" hidden></p>`;
+ d.querySelector('.listen').onclick=()=>speak(q+' '+opts.map((o,k)=>String.fromCharCode(65+k)+'. '+o).join('. '));
+ const box=d.querySelector('.opts'),w=d.querySelector('.why');
+ opts.forEach((o,k)=>{const b=document.createElement('button');b.className='opt';b.id=`q${i}o${k}`;b.textContent=String.fromCharCode(65+k)+'. '+o;
+  b.onclick=()=>{if(ans[i]!=null)return;ans[i]=k;store.set('answers',ans);lock()};box.appendChild(b)});
+ function lock(){if(ans[i]==null)return;[...box.children].forEach((b,k)=>{b.disabled=true;if(k===c)b.classList.add('right');else if(k===ans[i])b.classList.add('wrong')});
+  w.hidden=false;w.innerHTML=(ans[i]===c?'<b style="color:var(--good)">Correct.</b> ':'<b style="color:var(--bad)">Not quite.</b> ')+why;checkDone()}
+ lock();$('#quiz').appendChild(d)});
+
+function checkDone(){if(Object.keys(ans).length<Q.length)return;const s=Q.reduce((a,q,i)=>a+(ans[i]===q[2]?1:0),0);
+ const title=s===Q.length?'Master Builder of Ur':s>=6?'Royal Architect':'Brick Maker in Training';
+ $('#result').innerHTML=`<div class="badge"><svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="44" width="56" height="14" fill="var(--brick)"/><rect x="14" y="30" width="36" height="14" fill="var(--brick)" opacity=".85"/><rect x="24" y="18" width="16" height="12" fill="var(--brick)" opacity=".7"/><rect x="27" y="8" width="10" height="10" fill="var(--lapis)"/></svg><div><div class="score">${s} out of ${Q.length}</div><p>You earned the title <b>${title}</b>.${s<Q.length?' Look back at the explanations for the ones you missed.':''}</p></div></div>`;
+ if(!checkDone.fired){checkDone.fired=true;if(Object.keys(store.get('answers',{})).length===Q.length&&document.readyState==='complete')burst()}}
+checkDone.fired=Object.keys(ans).length===Q.length;checkDone();
+
+/* ---------- Writing: typed or Apple Pencil ---------- */
+const typed=$('#typed');typed.value=store.get('typed','');typed.oninput=()=>store.set('typed',typed.value);
+$('#writeListen').onclick=()=>speak($('#writePrompt').innerText);
+const pad=$('#pad'),px=pad.getContext('2d');let penInit=false;
+function setMode(pen){$('#penBox').hidden=!pen;typed.hidden=pen;$('#modePen').setAttribute('aria-pressed',pen);$('#modeType').setAttribute('aria-pressed',!pen);if(pen&&!penInit)initPad();store.set('pen',pen)}
+function initPad(){penInit=true;const r=pad.getBoundingClientRect(),dpr=devicePixelRatio||1;pad.width=r.width*dpr;pad.height=r.height*dpr;px.scale(dpr,dpr);px.lineCap=px.lineJoin='round';
+ const saved=store.get('pad',null);if(saved){const im=new Image();im.onload=()=>px.drawImage(im,0,0,r.width,r.height);im.src=saved}
+ let down=false;const pos=e=>{const b=pad.getBoundingClientRect();return[e.clientX-b.left,e.clientY-b.top]};
+ pad.onpointerdown=e=>{down=true;pad.setPointerCapture(e.pointerId);const[x,y]=pos(e);px.beginPath();px.moveTo(x,y)};
+ pad.onpointermove=e=>{if(!down)return;const[x,y]=pos(e);px.strokeStyle=getComputedStyle(document.body).color;px.lineWidth=e.pressure?1.5+e.pressure*3:2.5;px.lineTo(x,y);px.stroke()};
+ pad.onpointerup=()=>{down=false;store.set('pad',pad.toDataURL())}}
+$('#modeType').onclick=()=>setMode(false);$('#modePen').onclick=()=>setMode(true);
+$('#clearPad').onclick=()=>{px.clearRect(0,0,pad.width,pad.height);store.set('pad',null)};
+setMode(store.get('pen',false));
+
+/* ---------- Confetti ---------- */
+function burst(){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;const cv=$('#confetti'),x=cv.getContext('2d');cv.width=innerWidth;cv.height=innerHeight;
+ const cs=['#c99a2e','#1f4e9c','#b5683a','#2f8a86'];const P=Array.from({length:140},()=>({x:Math.random()*cv.width,y:-20-Math.random()*cv.height*.3,v:2+Math.random()*3,r:Math.random()*6,c:cs[Math.random()*4|0],s:4+Math.random()*5}));let t=0;
+ (function f(){x.clearRect(0,0,cv.width,cv.height);P.forEach(p=>{p.y+=p.v;p.x+=Math.sin((t+p.r)/12);x.fillStyle=p.c;x.fillRect(p.x,p.y,p.s,p.s*.6)});if(++t<220)requestAnimationFrame(f);else x.clearRect(0,0,cv.width,cv.height)})()}
+})();
+</script>
+
+</body></html>
